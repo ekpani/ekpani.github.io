@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ekpani — एकपानी</title>
+<meta name="description" content="Ekpani — एकपानी, one leaf. A small, quiet studio. Quiet, attentive tools for a curious, deliberate, focused life." />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#F3EFE6" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="Ekpani — एकपानी" />
+<meta property="og:description" content="One leaf. A small, quiet studio." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ekpani.com" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Halant:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --sage:#8C9A82;
+    --eucalyptus:#54624E;
+    --paper:#F3EFE6;
+    --charcoal:#23271F;
+    --river:#8FA3A8;
+    --line:#D8D0BF;
+    --serif:"DM Serif Display", Georgia, serif;
+    --deva:"Halant", serif;
+    --body:"Nunito", system-ui, sans-serif;
+    --mono:ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--charcoal);
+    font-family:var(--body); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    min-height:100svh; display:flex; flex-direction:column;
+  }
+  main{
+    flex:1 0 auto; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; text-align:center;
+    padding:48px 26px;
+  }
+  .stage{
+    display:flex; flex-direction:column; align-items:center;
+    opacity:0; transform:translateY(10px);
+    animation:rise 1.4s cubic-bezier(.2,.7,.2,1) .15s forwards;
+  }
+  @keyframes rise{to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){
+    .stage{animation:none; opacity:1; transform:none;}
+  }
+
+  .mark{ width:128px; height:117px; color:var(--eucalyptus); margin-bottom:38px; }
+  .wordmark{
+    font-family:var(--deva); font-weight:700; color:var(--eucalyptus);
+    font-size:clamp(76px,16vw,150px); line-height:.9; letter-spacing:.01em; margin:0;
+  }
+  .latin{
+    font-family:var(--serif); color:var(--sage);
+    font-size:clamp(18px,3.4vw,26px); letter-spacing:.34em; text-transform:uppercase;
+    margin:22px 0 0; padding-left:.34em;
+  }
+  .thesis{
+    font-family:var(--serif); color:var(--charcoal);
+    font-size:clamp(17px,2.2vw,21px); line-height:1.45; font-style:italic;
+    max-width:24ch; margin:46px 0 0; opacity:.85;
+  }
+
+  footer{
+    flex-shrink:0; text-align:center; padding:0 26px 40px;
+    font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--sage);
+  }
+  footer .dot{opacity:.5; margin:0 .7em;}
+  footer a{color:var(--sage); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .25s ease;}
+  footer a:hover{border-color:var(--sage);}
+</style>
+</head>
+<body>
+  <main>
+    <div class="stage">
+      <div class="leaf mark" data-variant="full" data-sw="4.5" data-vsw="2.6"></div>
+      <h1 class="wordmark" lang="kok">एकपानी</h1>
+      <p class="latin">Ekpani</p>
+      <p class="thesis">One leaf.</p>
+    </div>
+  </main>
+
+  <footer>
+    <span>एकपानी — one leaf</span>
+    <span class="dot">·</span>
+    <span>Ekpani Studio</span>
+    <span class="dot">·</span>
+    <span>2026</span>
+  </footer>
+
+  <script src="ekpani-leaf.js"></script>
+</body>
+</html>
