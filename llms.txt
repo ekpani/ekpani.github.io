@@ -1,0 +1,32 @@
+# Ekpani
+
+> Ekpani (एकपानी) builds tools and spaces that should exist. One plant, many leaves, each its own.
+
+Ekpani is Konkani for "one leaf," the name of the Centella asiatica plant (also known as brahmi or gotu kola), long noted for memory, calm, and focus. It is a small, independent studio: the quiet root that a handful of separate software products and spaces trace back to. Each keeps its own name and identity. Ekpani is the still point beneath them, never competing with them for attention.
+
+The work is the things their maker wished existed, then built. Everything here is made deliberately, with real care for the details, and only shipped when it earns it. Nothing chases hype or scale for its own sake. Things are made slowly and quietly, for the joy of building, one leaf at a time. Some leaves stay small and useful. Now and then one may grow past the rest. Either way the aim is plain: leave a little more good in the world, well made.
+
+The products are deliberately unalike: a terminal, a timezone planner, a cross-border medicine guide, an internet radio station, a founder community, a place to follow your curiosity. The throughline is not category, it is temperament. Quiet, attentive, considered, and meant to last. The kind of thing that could have existed quietly for decades.
+
+## Tools
+- [Shio](https://shio.sh): a terminal for the agent era, in your pocket. It connects to your own machines (a Mac, a server, a Pi in the closet) and the coding agents you run on them, with no account and no cloud in between.
+- [Timebase](https://timebase.me): a calmer way to visualize and plan across time zones. Countdowns to the events on your calendar, and meeting times that actually work for everyone.
+- [Medivalent](https://medivalent.com): cross-border medicine equivalence. Find the local equivalent of a medicine, by brand or symptom, in another country.
+
+## Spaces
+- [Samooh](https://samooh.com): a community for Indian-origin founders building global products. The long game, and the most personal of these.
+- [Dhuni](https://dhuni.net): a 24/7 internet radio for Indian classical music (Hindustani, Carnatic, instrumental, and vintage), tuned to the seasons. A quiet listening world for deep focus, by Samooh.
+- [Stem](https://stem.md): the place your curiosity is looking for. Document your rabbit holes and niche interests, and wander into everyone else's. Find trails worth following; leave trails worth finding.
+
+## How Ekpani builds
+- Deliberately. Every product, word, and detail is chosen, not defaulted.
+- Quietly. Calm over clever, restraint over noise.
+- For the joy of it. These are built for love of the craft, not to a roadmap or a trend.
+- To last, and to leave more good behind than they take.
+
+## Behind Ekpani
+Ekpani is the studio of [Amrith Shanbhag](https://amrith.co), who spent a decade in community and organic growth across consumer tech (including Product Hunt) and now builds his own products. Ekpani is an entity and a body of work, not a personal page. For the person, see amrith.co.
+
+## Contact
+- Email: hi@ekpani.com
+- Web: https://ekpani.com
