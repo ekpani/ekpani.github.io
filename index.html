@@ -26,7 +26,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Halant:wght@400;700&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Halant:wght@400;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   :root{
     --sage:#8C9A82;
@@ -35,11 +35,12 @@
     --paper:#F3EFE6;
     --paper-hi:#F8F5EE;
     --charcoal:#23271F;
+    --river:#8FA3A8;
     --gold:#B98A2E;
     --line:#D8D0BF;
-    --muted:#8A9079;
-    --hair:color-mix(in srgb, var(--charcoal) 11%, transparent);
-    --hair-2:color-mix(in srgb, var(--charcoal) 18%, transparent);
+    --muted:#7C8270;
+    --hair:color-mix(in srgb, var(--charcoal) 12%, transparent);
+    --hair-2:color-mix(in srgb, var(--charcoal) 20%, transparent);
     --serif:"DM Serif Display", Georgia, serif;
     --deva:"Halant", serif;
     --body:"Nunito", system-ui, sans-serif;
@@ -53,91 +54,84 @@
     background:var(--paper); color:var(--charcoal);
     font-family:var(--body); font-size:16px; line-height:1.6;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    padding:6vh 28px;
+    padding:6vh 24px;
   }
   body::after{
-    content:""; position:fixed; inset:0; pointer-events:none; z-index:60; opacity:.5;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   }
+
   a{ color:inherit; text-decoration:none; }
 
-  /* reveal */
-  @keyframes rise{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
-  .reveal{ opacity:0; animation:rise 1s var(--ease) forwards; }
-  @media (prefers-reduced-motion:reduce){ .reveal{ animation:none; opacity:1; } }
-
-  /* ── specimen sheet ── */
+  /* ── the specimen sheet ── */
   .sheet{
-    width:100%; max-width:920px; position:relative; z-index:1;
-    border:1px solid var(--hair-2);
-    background:color-mix(in srgb, var(--paper-hi) 50%, transparent);
-    padding:clamp(34px,4.4vw,66px);
+    width:100%; max-width:880px; position:relative; z-index:1;
+    border:1px solid var(--hair-2); background:color-mix(in srgb, var(--paper-hi) 55%, transparent);
+    padding:clamp(22px,3.4vw,40px);
+    opacity:0; transform:translateY(10px); animation:rise 1.3s var(--ease) .1s forwards;
   }
-  .sheet::before, .sheet::after{ content:""; position:absolute; width:10px; height:10px; pointer-events:none; }
-  .sheet::before{ top:8px; left:8px; border-top:1px solid var(--hair-2); border-left:1px solid var(--hair-2); }
-  .sheet::after{ bottom:8px; right:8px; border-bottom:1px solid var(--hair-2); border-right:1px solid var(--hair-2); }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce){ .sheet{ animation:none; opacity:1; transform:none; } }
+  /* corner ticks, like a mounted plate */
+  .sheet::before, .sheet::after{ content:""; position:absolute; width:9px; height:9px; pointer-events:none; }
+  .sheet::before{ top:7px; left:7px; border-top:1px solid var(--hair-2); border-left:1px solid var(--hair-2); }
+  .sheet::after{ bottom:7px; right:7px; border-bottom:1px solid var(--hair-2); border-right:1px solid var(--hair-2); }
 
   /* masthead */
-  .masthead{ display:flex; align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap;
-    padding-bottom:26px; border-bottom:1px solid var(--hair); }
-  .masthead .name{ font-family:var(--deva); font-weight:700; color:var(--eucalyptus);
-    font-size:clamp(34px,5vw,48px); line-height:1; letter-spacing:.01em; }
-  .masthead .meta{ font-family:var(--mono); font-size:10.5px; letter-spacing:.24em; text-transform:uppercase;
-    color:var(--sage); text-align:right; line-height:1.9; }
+  .masthead{
+    display:flex; align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    padding-bottom:18px; border-bottom:1px solid var(--hair);
+  }
+  .masthead .name{ font-family:var(--deva); font-weight:700; color:var(--eucalyptus); font-size:clamp(30px,4.6vw,42px); line-height:1; letter-spacing:.01em; }
+  .masthead .meta{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); text-align:right; }
 
-  /* plate */
-  .plate{ display:grid; grid-template-columns:minmax(230px,0.92fr) 1fr; gap:clamp(44px,7vw,96px);
-    padding-top:clamp(40px,5vw,64px); align-items:center; }
+  /* plate body: specimen | catalogue */
+  .plate{ display:grid; grid-template-columns:minmax(220px,1fr) 1.45fr; gap:clamp(24px,4vw,52px); padding-top:28px; align-items:start; }
 
-  /* specimen */
-  .specimen{ display:flex; flex-direction:column; align-items:center; text-align:center; }
-  .specimen .leaf{ width:min(100%,320px); height:auto; aspect-ratio:240/220; color:var(--eucalyptus); display:block; }
-  .label{ margin-top:30px; line-height:1.5; }
-  .label .bi{ font-family:var(--serif); font-style:italic; font-size:18px; color:var(--eucalyptus); }
-  .label .l2{ font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-top:11px; }
-  .label .l3{ font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage); margin-top:6px; }
-  .label .dv{ font-family:var(--deva); font-weight:700; text-transform:none; font-size:14px; color:var(--eucalyptus); letter-spacing:0; }
+  /* specimen (left) */
+  .specimen{ position:relative; }
+  .specimen .mount{ border:1px solid var(--hair); background:var(--paper); padding:clamp(16px,2.4vw,30px); }
+  .specimen .leaf{ width:100%; height:auto; aspect-ratio:240/220; color:var(--eucalyptus); display:block; }
+  .label{ margin-top:18px; font-family:var(--mono); font-size:11.5px; line-height:1.95; color:var(--muted); letter-spacing:.02em; }
+  .label .sp{ color:var(--eucalyptus); font-style:normal; }
+  .label .dv{ font-family:var(--deva); font-weight:700; font-size:15px; color:var(--eucalyptus); letter-spacing:0; }
+  .label .row{ display:block; }
+  .label .k{ color:var(--sage); }
 
-  /* catalogue */
-  .catalogue{ align-self:center; }
-  .lead{ font-family:var(--serif); font-weight:400; color:var(--charcoal);
-    font-size:clamp(22px,2.7vw,30px); line-height:1.28; letter-spacing:-.01em; text-wrap:balance;
-    max-width:18ch; margin-bottom:clamp(30px,4vw,46px); }
-  .grp{ font-family:var(--mono); font-size:10.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--sage);
-    display:flex; align-items:center; gap:13px; margin:0 0 6px; }
-  .grp:not(:first-of-type){ margin-top:30px; }
-  .grp::after{ content:""; flex:1; height:1px; background:var(--hair); }
+  /* catalogue (right) */
+  .lead{ font-family:var(--serif); font-weight:400; color:var(--charcoal); font-size:clamp(20px,2.5vw,26px); line-height:1.32; letter-spacing:-.01em; text-wrap:balance; max-width:26ch; margin-bottom:30px; }
+  .cat-head{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); display:flex; align-items:center; gap:12px; margin:0 0 6px; }
+  .cat-head:not(:first-of-type){ margin-top:24px; }
+  .cat-head::after{ content:""; flex:1; height:1px; background:var(--hair); }
 
-  .entry{ display:flex; align-items:baseline; gap:16px; padding:14px 2px; cursor:pointer; outline:none; }
-  .entry .num{ font-family:var(--mono); font-size:11px; color:var(--sage); width:1.8em; flex:none; letter-spacing:.04em; }
-  .entry .nm{ font-family:var(--serif); font-size:clamp(22px,2.6vw,28px); color:var(--eucalyptus); line-height:1; transition:color .25s var(--ease), transform .25s var(--ease); }
-  .entry .cap{ font-family:var(--body); font-size:13.5px; color:var(--muted); margin-left:auto; text-align:right; max-width:50%;
-    opacity:0; transform:translateX(-8px); transition:opacity .3s var(--ease), transform .3s var(--ease); }
-  .entry:hover .nm, .entry:focus-visible .nm{ color:var(--charcoal); transform:translateX(3px); }
-  .entry:hover .cap, .entry:focus-visible .cap{ opacity:1; transform:none; }
+  .entry{ display:flex; align-items:baseline; gap:12px; padding:9px 0; border-bottom:1px solid var(--hair); cursor:pointer; outline:none; }
+  .entry:last-child{ border-bottom:0; }
+  .entry .num{ font-family:var(--mono); font-size:11px; color:var(--sage); width:2.2em; flex:none; letter-spacing:.04em; }
+  .entry .nm{ font-family:var(--serif); font-size:clamp(19px,2.2vw,22px); color:var(--eucalyptus); line-height:1.1; transition:color .2s var(--ease); }
+  .entry .dots{ flex:1; align-self:flex-end; border-bottom:1px dotted var(--hair-2); transform:translateY(-4px); min-width:14px; }
+  .entry .cap{ font-family:var(--body); font-size:13.5px; color:var(--muted); text-align:right; flex:none; max-width:48%; }
+  .entry:hover .nm, .entry:focus-visible .nm{ color:var(--charcoal); }
+  .entry:hover .dots, .entry:focus-visible .dots{ border-bottom-color:var(--sage); }
   .entry[data-blurb="samooh"]:hover .nm, .entry[data-blurb="samooh"]:focus-visible .nm{ color:var(--gold); }
 
-  /* colophon */
-  .colophon{ margin-top:clamp(40px,5vw,60px); padding-top:24px; border-top:1px solid var(--hair);
-    display:flex; align-items:baseline; justify-content:space-between; gap:14px 24px; flex-wrap:wrap; }
-  .colophon .motto{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:15px; opacity:.85; }
-  .colophon .ends{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap; }
-  .colophon .ends a{ color:var(--muted); transition:color .2s var(--ease); }
-  .colophon .ends a:hover{ color:var(--eucalyptus); }
+  /* colophon + footer */
+  .colophon{ margin-top:30px; padding-top:20px; border-top:1px solid var(--hair); display:flex; align-items:baseline; justify-content:space-between; gap:18px 24px; flex-wrap:wrap; }
+  .colophon .motto{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:15.5px; opacity:.9; max-width:42ch; }
+  .colophon .ends{ font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--muted); display:flex; align-items:baseline; gap:30px; flex-wrap:wrap; }
+  .colophon .ends a{ color:var(--muted); border-bottom:1px solid var(--hair); transition:color .2s var(--ease), border-color .2s var(--ease); }
+  .colophon .ends a:hover{ color:var(--eucalyptus); border-bottom-color:var(--sage); }
 
   /* ── specimen-card modal ── */
   [data-blurb]{ cursor:pointer; }
-  .sheet{ transition:opacity .35s var(--ease), filter .35s var(--ease); }
-  body.card-open .sheet{ opacity:0; filter:blur(2px); pointer-events:none; }
   .scrim{ position:fixed; inset:0; z-index:40; display:flex; align-items:center; justify-content:center;
     padding:6vh 28px; overflow-y:auto;
-    background:color-mix(in srgb, var(--paper) 70%, transparent);
+    background:color-mix(in srgb, var(--paper) 86%, transparent);
+    -webkit-backdrop-filter:blur(7px); backdrop-filter:blur(7px);
     opacity:0; pointer-events:none; transition:opacity .35s var(--ease); }
   .scrim.open{ opacity:1; pointer-events:auto; }
   .card{ width:100%; max-width:560px; opacity:0; transform:translateY(14px) scale(.99); transition:opacity .4s var(--ease) .04s, transform .4s var(--ease) .04s; }
   .scrim.open .card{ opacity:1; transform:none; }
-  .card-back{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage);
-    background:none; border:0; padding:0 0 20px; cursor:pointer; transition:color .2s var(--ease); }
+  .card-back{ font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--sage); background:none; border:0; padding:0 0 20px; cursor:pointer; transition:color .2s var(--ease); }
   .card-back:hover{ color:var(--eucalyptus); }
   .frame{ position:relative; border:1px solid var(--hair-2); background:var(--paper-hi); padding:clamp(26px,3.6vw,40px); }
   .frame::before, .frame::after{ content:""; position:absolute; width:9px; height:9px; pointer-events:none; }
@@ -155,77 +149,90 @@
   .card-visit::after{ content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease); }
   .card-visit:hover::after{ transform:scaleX(1); }
 
-  /* ── mobile: calm centered column, lots of air ── */
+  /* ── mobile: the distilled essence. leaf, name, a calm centered field-list ── */
   @media (max-width:720px){
     body{ padding:0; align-items:stretch; justify-content:flex-start; }
-    .sheet{ border:0; min-height:100dvh; padding:9vh 26px 7vh; display:flex; flex-direction:column; }
+    .sheet{ border:0; min-height:100dvh; padding:10vh 28px 7vh; display:flex; flex-direction:column; }
     .sheet::before,.sheet::after{ display:none; }
-    .masthead{ flex-direction:column; align-items:center; text-align:center; gap:10px; border-bottom:0; padding-bottom:0; }
-    .masthead .name{ font-size:46px; }
-    .masthead .meta{ text-align:center; }
-    .plate{ grid-template-columns:1fr; gap:7vh; padding-top:7vh; }
-    .specimen .leaf{ width:min(58%,210px); }
-    .label{ margin-top:24px; }
+
+    .masthead{ flex-direction:column; align-items:center; text-align:center; gap:14px; padding-bottom:0; border-bottom:0; }
+    .masthead .name{ font-size:clamp(46px,15vw,60px); }
+    .masthead .meta{ text-align:center; line-height:2; font-size:10.5px; }
+
+    .plate{ grid-template-columns:1fr; gap:9vh; padding-top:9vh; }
+    .specimen{ display:flex; flex-direction:column; align-items:center; }
+    .specimen .mount{ width:min(66%,220px); }
+    .label{ text-align:center; margin-top:24px; line-height:2.05; }
+
     .catalogue{ text-align:center; }
-    .lead{ max-width:none; margin:0 auto clamp(34px,8vw,46px); }
-    .grp{ justify-content:center; }
-    .grp::after, .grp::before{ display:none; }
-    .grp{ gap:0; }
-    .entry{ justify-content:center; padding:16px 0; }
-    .entry .num{ width:auto; }
-    .entry .cap{ display:none; }
-    .colophon{ flex-direction:column; align-items:center; text-align:center; gap:16px; margin-top:auto; padding-top:7vh; border-top:0; }
-    .colophon .ends{ justify-content:center; }
-    .scrim{ align-items:flex-start; padding:8vh 22px 6vh; }
+    .lead{ max-width:18ch; margin:0 auto clamp(34px,9vw,50px); font-size:clamp(21px,6vw,26px); }
+    .cat-head{ justify-content:center; gap:0; margin-bottom:10px; }
+    .cat-head::after{ display:none; }
+    .cat-head:not(:first-of-type){ margin-top:6vh; }
+
+    .entry{ justify-content:center; padding:15px 0; gap:0; border-bottom:0; transition:opacity .2s var(--ease), transform .2s var(--ease); }
+    .entry .num, .entry .dots, .entry .cap{ display:none; }
+    .entry .nm{ font-size:clamp(24px,6.6vw,30px); }
+    .entry:active{ opacity:.55; transform:scale(.98); }
+    .entry:active .nm{ color:var(--charcoal); }
+    .entry[data-blurb="samooh"]:active .nm{ color:var(--gold); }
+
+    .colophon{ flex-direction:column; align-items:center; text-align:center; gap:20px; margin-top:auto; padding-top:9vh; border-top:0; }
+    .colophon .motto{ max-width:30ch; }
+    .colophon .ends{ justify-content:center; gap:28px; }
+
+    .scrim{ align-items:flex-start; padding:7vh 22px 6vh; }
   }
 </style>
 </head>
 <body>
   <main class="sheet">
-    <div class="masthead reveal" style="animation-delay:.05s">
+    <div class="masthead">
       <div class="name" lang="kok">एकपानी</div>
       <div class="meta">Ekpani · one leaf<br>a tiny studio · est. 2026</div>
     </div>
 
     <div class="plate">
-      <aside class="specimen reveal" style="animation-delay:.18s">
-        <div class="leaf" data-variant="full" data-sw="4.2" data-vsw="2.5"></div>
+      <aside class="specimen">
+        <div class="mount">
+          <div class="leaf" data-variant="full" data-sw="4.5" data-vsw="2.7"></div>
+        </div>
         <div class="label">
-          <div class="bi">Centella asiatica</div>
-          <div class="l2"><span class="dv" lang="kok">एकपानी</span> · Apiaceae · one leaf</div>
-          <div class="l3">noted for memory, calm &amp; focus</div>
+          <span class="row"><span class="sp">Centella asiatica</span> (L.) Urb.</span>
+          <span class="row"><span class="dv" lang="kok">एकपानी</span> &nbsp;"ekpani" · Konkani</span>
+          <span class="row"><span class="k">noted for</span> memory, calm, focus</span>
         </div>
       </aside>
 
-      <section class="catalogue reveal" style="animation-delay:.3s">
-        <p class="lead">One plant, many leaves. Each its own.</p>
+      <section class="catalogue">
+        <p class="lead">A small studio for the things I wish existed.</p>
 
-        <p class="grp">Tools</p>
+        <p class="cat-head">Tools</p>
         <div class="entry" data-blurb="shio" role="link" tabindex="0">
-          <span class="num">i</span><span class="nm">Shio</span><span class="cap">a terminal for the agent era</span>
+          <span class="num">i</span><span class="nm">Shio</span><span class="dots"></span><span class="cap">a terminal for the agent era</span>
         </div>
         <div class="entry" data-blurb="timebase" role="link" tabindex="0">
-          <span class="num">ii</span><span class="nm">Timebase</span><span class="cap">timezones made simple</span>
+          <span class="num">ii</span><span class="nm">Timebase</span><span class="dots"></span><span class="cap">timezones made simple</span>
         </div>
         <div class="entry" data-blurb="medivalent" role="link" tabindex="0">
-          <span class="num">iii</span><span class="nm">Medivalent</span><span class="cap">a pharmacy guide across borders</span>
+          <span class="num">iii</span><span class="nm">Medivalent</span><span class="dots"></span><span class="cap">a pharmacy guide across borders</span>
         </div>
 
-        <p class="grp">Spaces</p>
+        <p class="cat-head">Spaces</p>
         <div class="entry" data-blurb="samooh" role="link" tabindex="0">
-          <span class="num">iv</span><span class="nm">Samooh</span><span class="cap">the long game</span>
+          <span class="num">iv</span><span class="nm">Samooh</span><span class="dots"></span><span class="cap">Indian founders, global products</span>
         </div>
         <div class="entry" data-blurb="dhuni" role="link" tabindex="0">
-          <span class="num">v</span><span class="nm">Dhuni</span><span class="cap">a quiet listening world</span>
+          <span class="num">v</span><span class="nm">Dhuni</span><span class="dots"></span><span class="cap">a quiet listening world</span>
         </div>
         <div class="entry" data-blurb="stem" role="link" tabindex="0">
-          <span class="num">vi</span><span class="nm">Stem</span><span class="cap">follow your curiosity</span>
+          <span class="num">vi</span><span class="nm">Stem</span><span class="dots"></span><span class="cap">follow your curiosity</span>
         </div>
       </section>
     </div>
 
-    <div class="colophon reveal" style="animation-delay:.42s">
-      <p class="motto">Built quietly, for the joy of it.</p>
+    <div class="colophon">
+      <p class="motto">One plant, many leaves, each its own.</p>
       <div class="ends">
         <a href="mailto:hi@ekpani.com">hi@ekpani.com</a>
         <span>by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a></span>
@@ -245,7 +252,7 @@
           body:"A calmer way to visualize and plan across time zones. Countdowns to the events on your calendar, and a way to find a meeting time that actually works for everyone."},
         medivalent:{title:"Medivalent", num:"iii", group:"Tools", tag:"a pharmacy guide across borders", img:"medivalent", href:"https://medivalent.com/?ref=ekpani.com", link:"medivalent.com",
           body:"Find the medicine you need, by brand or symptom, in 16 countries. For travelers, nomads, expats, and anyone far from home."},
-        samooh:{title:"Samooh", num:"iv", group:"Spaces", tag:"the long game", img:"samooh", href:"https://samooh.com/?ref=ekpani.com", link:"samooh.com", accent:true,
+        samooh:{title:"Samooh", num:"iv", group:"Spaces", tag:"Indian founders, global products", img:"samooh", href:"https://samooh.com/?ref=ekpani.com", link:"samooh.com", accent:true,
           body:"A community for Indian-origin founders building global products. The throughline behind everything else: a decade of community work, pointed at home."},
         dhuni:{title:"Dhuni", num:"v", group:"Spaces", tag:"a quiet listening world", img:"dhuni", href:"https://dhuni.net/?ref=ekpani.com", link:"dhuni.net",
           body:"24/7 internet radio for Indian classical: Hindustani, Carnatic, instrumental, and vintage music, tuned to the seasons. By Samooh."},
