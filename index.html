@@ -4,15 +4,17 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Ekpani — एकपानी</title>
-<meta name="description" content="Ekpani (एकपानी) — one leaf. A small, quiet studio. One plant, many leaves; each its own. Tools and spaces made deliberately." />
+<meta name="description" content="Ekpani (एकपानी) means one leaf. A small studio for the things I wish existed. One plant, many leaves, each its own." />
+<meta name="author" content="Amrith Shanbhag" />
+<link rel="canonical" href="https://ekpani.com/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <meta name="theme-color" content="#F3EFE6" />
 
-<!-- Open Graph -->
-<meta property="og:title" content="Ekpani — एकपानी" />
-<meta property="og:description" content="One leaf. A small, quiet studio. One plant, many leaves — each its own." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://ekpani.com" />
+<meta property="og:site_name" content="Ekpani" />
+<meta property="og:title" content="Ekpani — एकपानी" />
+<meta property="og:description" content="One leaf. A small studio for the things I wish existed. One plant, many leaves, each its own." />
+<meta property="og:url" content="https://ekpani.com/" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -21,141 +23,210 @@
   :root{
     --sage:#8C9A82;
     --eucalyptus:#54624E;
+    --eucalyptus-deep:#3D4838;
     --paper:#F3EFE6;
+    --paper-hi:#F8F5EE;
     --charcoal:#23271F;
     --river:#8FA3A8;
+    --gold:#B98A2E;            /* a muted nod to Samooh's warmth, used once */
     --line:#D8D0BF;
-    --muted:#9AA08E;
+    --muted:#7C8270;
+    --hair:color-mix(in srgb, var(--charcoal) 13%, transparent);
     --serif:"DM Serif Display", Georgia, serif;
     --deva:"Halant", serif;
     --body:"Nunito", system-ui, sans-serif;
     --mono:ui-monospace, "SF Mono", Menlo, monospace;
+    --ease:cubic-bezier(.32,.72,0,1);
   }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
+  *,*::before,*::after{box-sizing:border-box; margin:0; padding:0;}
+  html{-webkit-text-size-adjust:100%;}
   body{
-    margin:0; background:var(--paper); color:var(--charcoal);
-    font-family:var(--body); -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    min-height:100svh; display:flex; flex-direction:column;
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    background:var(--paper); color:var(--charcoal);
+    font-family:var(--body); font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    padding:9vh 24px 5vh;
   }
-  main{
-    flex:1 0 auto; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; text-align:center;
-    padding:56px 26px 32px;
-  }
-  .stage{
-    display:flex; flex-direction:column; align-items:center;
-    opacity:0; transform:translateY(10px);
-    animation:rise 1.5s cubic-bezier(.2,.7,.2,1) .12s forwards;
-  }
-  @keyframes rise{to{opacity:1; transform:none;}}
-  @media (prefers-reduced-motion:reduce){ .stage{animation:none; opacity:1; transform:none;} }
+  @media (min-width:1100px) and (min-height:840px){ body{ justify-content:center; padding-top:5vh; } }
 
-  /* ---- hero ---- */
-  .mark{ width:96px; height:88px; color:var(--eucalyptus); margin-bottom:30px; }
-  .wordmark{
-    font-family:var(--deva); font-weight:700; color:var(--eucalyptus);
-    font-size:clamp(64px,12vw,124px); line-height:.9; letter-spacing:.01em; margin:0;
-  }
-  .latin{
-    font-family:var(--serif); color:var(--sage);
-    font-size:clamp(15px,2.6vw,20px); letter-spacing:.4em; text-transform:uppercase;
-    margin:20px 0 0; padding-left:.4em;
-  }
-  .thesis{
-    font-family:var(--serif); font-style:italic; color:var(--charcoal);
-    font-size:clamp(16px,2.1vw,21px); line-height:1.45;
-    max-width:30ch; margin:34px 0 0; opacity:.82;
+  /* paper grain — a quiet nod to Samooh's texture */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   }
 
-  /* ---- divider ---- */
-  .rule{ width:42px; height:1px; background:var(--line); margin:46px 0 44px; }
+  main{ width:100%; max-width:660px; position:relative; z-index:1; }
+  .stage{ opacity:0; transform:translateY(10px); animation:rise 1.3s var(--ease) .1s forwards; }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce){ .stage{ animation:none; opacity:1; transform:none; } }
 
-  /* ---- roster ---- */
-  .roster{
-    display:flex; gap:clamp(56px,12vw,108px); align-items:flex-start;
-    text-align:left;
-  }
-  .group .eyebrow{
-    font-family:var(--mono); font-size:11.5px; letter-spacing:.22em; text-transform:uppercase;
-    color:var(--sage); margin:0 0 18px;
-  }
-  .group ul{ list-style:none; margin:0; padding:0; }
-  .group li{ margin:0 0 11px; line-height:1.1; }
-  .group li:last-child{ margin-bottom:0; }
-  .group a, .group .soon{
-    font-family:var(--serif); font-size:clamp(19px,2.4vw,23px); line-height:1.2;
-  }
-  .group a{
+  a{ color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px;
+     text-decoration-color:color-mix(in srgb, currentColor 30%, transparent); transition:text-decoration-color .15s var(--ease), color .15s var(--ease); }
+  a:hover{ text-decoration-color:currentColor; }
+
+  /* ── hero ── */
+  .mark{ width:62px; height:57px; color:var(--eucalyptus); margin-bottom:22px; }
+  .wordmark{ display:flex; align-items:baseline; gap:.5em; margin-bottom:26px; flex-wrap:wrap; }
+  .wordmark .deva{ font-family:var(--deva); font-weight:700; color:var(--eucalyptus);
+    font-size:clamp(40px,8vw,56px); line-height:1; letter-spacing:.01em; }
+  .wordmark .latin{ font-family:var(--mono); font-size:12px; letter-spacing:.26em; text-transform:uppercase;
+    color:var(--sage); transform:translateY(-.15em); }
+  h1{ font-family:var(--serif); font-weight:400; color:var(--charcoal);
+    font-size:clamp(23px,3.4vw,29px); line-height:1.32; letter-spacing:-.01em; text-wrap:balance;
+    max-width:24ch; margin-bottom:42px; }
+
+  /* ── roster blocks ── */
+  .block{ margin-bottom:30px; }
+  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--sage); display:flex; align-items:center; gap:12px; margin-bottom:15px; }
+  .eyebrow::after{ content:""; flex:1; height:1px; background:var(--hair); }
+  .roster{ list-style:none; display:flex; flex-wrap:wrap; align-items:baseline; gap:5px 12px; }
+  .roster li{ white-space:nowrap; }
+  .roster .sep{ color:var(--hair); }
+  .roster a{
+    font-family:var(--serif); font-size:clamp(20px,2.6vw,24px); line-height:1.25;
     color:var(--eucalyptus); text-decoration:none;
-    border-bottom:1px solid transparent; padding-bottom:1px; transition:border-color .28s ease, color .28s ease;
+    border-bottom:1px solid transparent; padding-bottom:1px; transition:border-color .25s var(--ease);
   }
-  .group a:hover{ border-bottom-color:var(--sage); }
-  .group .soon{
-    color:var(--muted); cursor:default; position:relative;
-  }
-  .group .soon::after{
-    content:"soon"; font-family:var(--mono); font-style:normal;
-    font-size:9.5px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--sage); opacity:.7; vertical-align:super; margin-left:7px;
-  }
+  .roster a:hover{ border-bottom-color:var(--sage); }
+  .roster a[data-blurb="samooh"]:hover{ border-bottom-color:var(--gold); }
 
-  /* ---- footer ---- */
-  footer{
-    flex-shrink:0; text-align:center; padding:0 26px 38px;
-    font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--sage); line-height:2.2;
-  }
-  footer a{ color:var(--sage); text-decoration:none; border-bottom:1px solid transparent; transition:border-color .25s ease, color .25s ease; }
-  footer a:hover{ border-bottom-color:var(--sage); color:var(--eucalyptus); }
-  footer .sep{ opacity:.45; margin:0 .6em; }
-  footer .line2{ display:block; color:var(--muted); }
-  footer .line2 a{ color:var(--muted); }
+  /* ── closing ── */
+  .offer{ margin-top:6px; padding-top:30px; border-top:1px solid var(--hair); max-width:54ch; }
+  .offer .bridge{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:18px; line-height:1.5; opacity:.9; }
+  .offer .ask{ color:var(--muted); font-size:14.5px; margin-top:12px; }
+  .offer .ask a{ color:var(--eucalyptus); }
 
-  @media (max-width:560px){
-    .roster{ flex-direction:row; gap:48px; justify-content:center; }
-    footer .sep{ display:none; }
-    footer span.email{ display:block; }
+  /* ── footer ── */
+  footer{ margin-top:40px; font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+    color:var(--muted); display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; }
+  footer a{ text-decoration-color:var(--hair); }
+
+  /* ── blurb overlay (seamless expand) ── */
+  [data-blurb]{ cursor:pointer; }
+  main{ transition:opacity .3s var(--ease); }
+  body.blurb-open main{ opacity:0; pointer-events:none; }
+  .blurb{ position:fixed; inset:0; z-index:40; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    padding:9vh 24px 5vh; overflow-y:auto; opacity:0; pointer-events:none; transition:opacity .3s var(--ease); }
+  @media (min-width:1100px) and (min-height:840px){ .blurb{ justify-content:center; } }
+  .blurb.open{ opacity:1; pointer-events:auto; }
+  .blurb-inner{ width:100%; max-width:560px; }
+  .blurb-back{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--muted);
+    background:none; border:0; padding:0; cursor:pointer; margin-bottom:34px; transition:color .2s var(--ease); }
+  .blurb-back:hover{ color:var(--eucalyptus); }
+  .blurb-eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); margin-bottom:14px; }
+  .blurb-title{ font-family:var(--serif); font-weight:400; color:var(--eucalyptus); font-size:32px; line-height:1.1; margin-bottom:22px; }
+  .blurb-figure{ display:block; margin:0 0 24px; width:100%; overflow:hidden; border-radius:12px;
+    border:1px solid var(--line); background:var(--paper-hi); }
+  .blurb-figure img{ display:block; width:100%; height:auto; max-height:40vh; object-fit:contain; transition:transform .4s var(--ease); }
+  .blurb-figure:hover img{ transform:scale(1.015); }
+  .blurb-body{ color:var(--charcoal); font-size:16px; line-height:1.6; max-width:50ch; margin-bottom:26px; text-wrap:pretty; }
+  .blurb-visit{ font-family:var(--mono); font-size:13px; letter-spacing:.04em; color:var(--eucalyptus);
+    text-decoration:none; position:relative; }
+  .blurb-visit::after{ content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:currentColor;
+    transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease); }
+  .blurb-visit:hover::after{ transform:scaleX(1); }
+
+  @media (max-width:540px){
+    body{ padding:7vh 20px 5vh; justify-content:flex-start; }
+    .mark{ width:54px; height:50px; margin-bottom:18px; }
+    .wordmark{ margin-bottom:20px; }
+    h1{ margin-bottom:30px; }
+    .block{ margin-bottom:24px; }
+    .blurb{ padding:7vh 20px 5vh; }
+    .blurb-title{ font-size:27px; }
   }
 </style>
 </head>
 <body>
   <main>
     <div class="stage">
-      <div class="leaf mark" data-variant="full" data-sw="4.5" data-vsw="2.6"></div>
-      <h1 class="wordmark" lang="kok">एकपानी</h1>
-      <p class="latin">Ekpani</p>
-      <p class="thesis">One plant, many leaves&nbsp;— each its own.</p>
+      <div class="leaf mark" data-variant="full" data-sw="5" data-vsw="3"></div>
 
-      <div class="rule" role="presentation"></div>
+      <div class="wordmark">
+        <span class="deva" lang="kok">एकपानी</span>
+        <span class="latin">Ekpani · one leaf</span>
+      </div>
 
-      <nav class="roster" aria-label="What grows here">
-        <div class="group">
-          <p class="eyebrow">Tools</p>
-          <ul>
-            <li><a href="https://timebase.me" target="_blank" rel="noopener" title="A calmer way to visualize and plan across time zones — countdowns to events on your calendar, and meetings at a time that works for everyone.">Timebase</a></li>
-            <li><a href="https://shio.sh" target="_blank" rel="noopener" title="A mobile-first terminal built for the agent era.">Shio</a></li>
-            <li><a href="https://medivalent.com" target="_blank" rel="noopener" title="Cross-border medicine equivalence — find the local equivalent of a medicine in another country.">Medivalent</a></li>
-          </ul>
-        </div>
-        <div class="group">
-          <p class="eyebrow">Spaces</p>
-          <ul>
-            <li><a href="https://stem.md" target="_blank" rel="noopener" title="The place your curiosity is looking for. Document your rabbit holes and niche interests, and explore others'. Find trails worth following; leave trails worth finding.">Stem</a></li>
-            <li><a href="https://samooh.com" target="_blank" rel="noopener" title="A community for Indian-origin founders building global products.">Samooh</a></li>
-            <li><a href="https://dhuni.net" target="_blank" rel="noopener" title="A 24/7 internet radio for Indian classical, Hindustani, Carnatic, instrumental, and vintage music — a quiet listening world for deep focus. By Samooh.">Dhuni</a></li>
-          </ul>
-        </div>
-      </nav>
+      <h1>A small studio for the things I wish existed. One plant, many leaves, each its own.</h1>
+
+      <div class="block">
+        <p class="eyebrow">Tools</p>
+        <ul class="roster">
+          <li><a data-blurb="shio" href="https://shio.sh/?ref=ekpani.com" target="_blank" rel="noopener">Shio</a></li><li class="sep">·</li>
+          <li><a data-blurb="timebase" href="https://timebase.me/?ref=ekpani.com" target="_blank" rel="noopener">Timebase</a></li><li class="sep">·</li>
+          <li><a data-blurb="medivalent" href="https://medivalent.com/?ref=ekpani.com" target="_blank" rel="noopener">Medivalent</a></li>
+        </ul>
+      </div>
+
+      <div class="block">
+        <p class="eyebrow">Spaces</p>
+        <ul class="roster">
+          <li><a data-blurb="samooh" href="https://samooh.com/?ref=ekpani.com" target="_blank" rel="noopener">Samooh</a></li><li class="sep">·</li>
+          <li><a data-blurb="dhuni" href="https://dhuni.net/?ref=ekpani.com" target="_blank" rel="noopener">Dhuni</a></li><li class="sep">·</li>
+          <li><a data-blurb="stem" href="https://stem.md/?ref=ekpani.com" target="_blank" rel="noopener">Stem</a></li>
+        </ul>
+      </div>
+
+      <div class="offer">
+        <p class="bridge">Built quietly, for the joy of it. Now and then, a leaf grows past the rest.</p>
+        <p class="ask">Building something thoughtful? <a href="mailto:hi@ekpani.com">Say hi</a>.</p>
+      </div>
+
+      <footer>
+        <a href="mailto:hi@ekpani.com">hi@ekpani.com</a>
+        <span>a tiny studio by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a></span>
+      </footer>
     </div>
   </main>
 
-  <footer>
-    <span class="email"><a href="mailto:hi@ekpani.com">hi@ekpani.com</a></span>
-    <span class="sep">·</span>
-    <span class="line2">a tiny studio by <a href="https://amrith.co" target="_blank" rel="noopener">amrith</a></span>
-  </footer>
+  <section class="blurb" id="blurb" aria-hidden="true" aria-live="polite"></section>
 
   <script src="ekpani-leaf.js"></script>
+  <script>
+    (function(){
+      var B = {
+        shio:{title:"Shio", tag:"a terminal for the agent era", img:"shio", href:"https://shio.sh/?ref=ekpani.com", link:"shio.sh",
+          body:"The terminal for the agent era, in your pocket. It connects to your own machines (your Mac, a server, a Pi in the closet) and the coding agents you run on them: Claude Code, Codex, local models, anything. No account, no cloud of ours."},
+        timebase:{title:"Timebase", tag:"timezones made simple", img:"timebase", href:"https://timebase.me/?ref=ekpani.com", link:"timebase.me",
+          body:"A calmer way to visualize and plan across time zones. Countdowns to the events on your calendar, and a way to find a meeting time that actually works for everyone."},
+        medivalent:{title:"Medivalent", tag:"a pharmacy guide across borders", img:"medivalent", href:"https://medivalent.com/?ref=ekpani.com", link:"medivalent.com",
+          body:"Find the medicine you need, by brand or symptom, in 16 countries. For travelers, nomads, expats, and anyone far from home."},
+        samooh:{title:"Samooh", tag:"the long game", img:"samooh", href:"https://samooh.com/?ref=ekpani.com", link:"samooh.com", accent:true,
+          body:"A community for Indian-origin founders building global products. The throughline behind everything else: a decade of community work, pointed at home."},
+        dhuni:{title:"Dhuni", tag:"a quiet listening world", img:"dhuni", href:"https://dhuni.net/?ref=ekpani.com", link:"dhuni.net",
+          body:"24/7 internet radio for Indian classical: Hindustani, Carnatic, instrumental, and vintage music, tuned to the seasons. By Samooh."},
+        stem:{title:"Stem", tag:"follow your curiosity", img:"stem", href:"https://stem.md/?ref=ekpani.com", link:"stem.md",
+          body:"The place your curiosity is looking for. Document your rabbit holes and niche interests, and wander into everyone else's. Find trails worth following; leave trails worth finding."}
+      };
+      var el = document.getElementById("blurb"), openKey = null;
+      function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+      function render(b){
+        var img = '<img src="images/'+b.img+'.png" alt="'+esc(b.title)+'" loading="lazy" />';
+        el.innerHTML =
+          '<div class="blurb-inner">' +
+          '<button class="blurb-back" type="button">&larr; back</button>' +
+          (b.tag ? '<p class="blurb-eyebrow"'+(b.accent?' style="color:var(--gold)"':'')+'>'+esc(b.tag)+'</p>' : '') +
+          '<h2 class="blurb-title">'+esc(b.title)+'</h2>' +
+          '<a class="blurb-figure" href="'+b.href+'" target="_blank" rel="noopener" aria-label="Visit '+esc(b.title)+'">'+img+'</a>' +
+          '<p class="blurb-body">'+esc(b.body)+'</p>' +
+          '<a class="blurb-visit" href="'+b.href+'" target="_blank" rel="noopener">'+esc(b.link)+' &rarr;</a>' +
+          '</div>';
+      }
+      function open(k,push){var b=B[k];if(!b)return;render(b);openKey=k;document.body.classList.add("blurb-open");el.classList.add("open");el.setAttribute("aria-hidden","false");if(push){try{history.pushState({blurb:k},"");}catch(e){}}}
+      function close(){openKey=null;document.body.classList.remove("blurb-open");el.classList.remove("open");el.setAttribute("aria-hidden","true");}
+      function back(){if(history.state&&history.state.blurb){history.back();}else{close();}}
+      document.querySelectorAll("[data-blurb]").forEach(function(a){
+        a.addEventListener("click",function(e){var k=a.getAttribute("data-blurb");if(!B[k])return;e.preventDefault();open(k,true);});
+      });
+      el.addEventListener("click",function(e){
+        if(e.target.closest(".blurb-visit"))return;
+        if(e.target.closest(".blurb-back")){back();return;}
+        if(!e.target.closest(".blurb-inner"))back();
+      });
+      document.addEventListener("keydown",function(e){if(e.key==="Escape"&&openKey)back();});
+      window.addEventListener("popstate",function(){if(openKey)close();});
+    })();
+  </script>
 </body>
 </html>
