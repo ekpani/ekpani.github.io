@@ -28,10 +28,11 @@
     --paper-hi:#F8F5EE;
     --charcoal:#23271F;
     --river:#8FA3A8;
-    --gold:#B98A2E;            /* a muted nod to Samooh's warmth, used once */
+    --gold:#B98A2E;
     --line:#D8D0BF;
     --muted:#7C8270;
-    --hair:color-mix(in srgb, var(--charcoal) 13%, transparent);
+    --hair:color-mix(in srgb, var(--charcoal) 12%, transparent);
+    --hair-2:color-mix(in srgb, var(--charcoal) 20%, transparent);
     --serif:"DM Serif Display", Georgia, serif;
     --deva:"Halant", serif;
     --body:"Nunito", system-ui, sans-serif;
@@ -41,142 +42,165 @@
   *,*::before,*::after{box-sizing:border-box; margin:0; padding:0;}
   html{-webkit-text-size-adjust:100%;}
   body{
-    min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+    min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:center;
     background:var(--paper); color:var(--charcoal);
-    font-family:var(--body); font-size:16px; line-height:1.65;
+    font-family:var(--body); font-size:16px; line-height:1.6;
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    padding:9vh 24px 5vh;
+    padding:6vh 24px;
   }
-  @media (min-width:1100px) and (min-height:840px){ body{ justify-content:center; padding-top:5vh; } }
-
-  /* paper grain: a quiet nod to Samooh's texture */
   body::after{
     content:""; position:fixed; inset:0; pointer-events:none; z-index:50; opacity:.5;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   }
 
-  main{ width:100%; max-width:660px; position:relative; z-index:1; }
-  .stage{ opacity:0; transform:translateY(10px); animation:rise 1.3s var(--ease) .1s forwards; }
-  @keyframes rise{ to{ opacity:1; transform:none; } }
-  @media (prefers-reduced-motion:reduce){ .stage{ animation:none; opacity:1; transform:none; } }
+  a{ color:inherit; text-decoration:none; }
 
-  a{ color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px;
-     text-decoration-color:color-mix(in srgb, currentColor 30%, transparent); transition:text-decoration-color .15s var(--ease), color .15s var(--ease); }
-  a:hover{ text-decoration-color:currentColor; }
-
-  /* ── hero ── */
-  .mark{ width:62px; height:57px; color:var(--eucalyptus); margin-bottom:22px; }
-  .wordmark{ display:flex; align-items:baseline; gap:.5em; margin-bottom:26px; flex-wrap:wrap; }
-  .wordmark .deva{ font-family:var(--deva); font-weight:700; color:var(--eucalyptus);
-    font-size:clamp(40px,8vw,56px); line-height:1; letter-spacing:.01em; }
-  .wordmark .latin{ font-family:var(--mono); font-size:12px; letter-spacing:.26em; text-transform:uppercase;
-    color:var(--sage); transform:translateY(-.15em); }
-  h1{ font-family:var(--serif); font-weight:400; color:var(--charcoal);
-    font-size:clamp(23px,3.4vw,29px); line-height:1.32; letter-spacing:-.01em; text-wrap:balance;
-    max-width:24ch; margin-bottom:42px; }
-
-  /* ── roster blocks ── */
-  .block{ margin-bottom:30px; }
-  .eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
-    color:var(--sage); display:flex; align-items:center; gap:12px; margin-bottom:15px; }
-  .eyebrow::after{ content:""; flex:1; height:1px; background:var(--hair); }
-  .roster{ list-style:none; display:flex; flex-wrap:wrap; align-items:baseline; gap:5px 12px; }
-  .roster li{ white-space:nowrap; }
-  .roster .sep{ color:var(--hair); }
-  .roster a{
-    font-family:var(--serif); font-size:clamp(20px,2.6vw,24px); line-height:1.25;
-    color:var(--eucalyptus); text-decoration:none;
-    border-bottom:1px solid transparent; padding-bottom:1px; transition:border-color .25s var(--ease);
+  /* ── the specimen sheet ── */
+  .sheet{
+    width:100%; max-width:880px; position:relative; z-index:1;
+    border:1px solid var(--hair-2); background:color-mix(in srgb, var(--paper-hi) 55%, transparent);
+    padding:clamp(22px,3.4vw,40px);
+    opacity:0; transform:translateY(10px); animation:rise 1.3s var(--ease) .1s forwards;
   }
-  .roster a:hover{ border-bottom-color:var(--sage); }
-  .roster a[data-blurb="samooh"]:hover{ border-bottom-color:var(--gold); }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion:reduce){ .sheet{ animation:none; opacity:1; transform:none; } }
+  /* corner ticks, like a mounted plate */
+  .sheet::before, .sheet::after{ content:""; position:absolute; width:9px; height:9px; pointer-events:none; }
+  .sheet::before{ top:7px; left:7px; border-top:1px solid var(--hair-2); border-left:1px solid var(--hair-2); }
+  .sheet::after{ bottom:7px; right:7px; border-bottom:1px solid var(--hair-2); border-right:1px solid var(--hair-2); }
 
-  /* ── closing ── */
-  .offer{ margin-top:6px; padding-top:30px; border-top:1px solid var(--hair); max-width:54ch; }
-  .offer .bridge{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:18px; line-height:1.5; opacity:.9; }
-  .offer .ask{ color:var(--muted); font-size:14.5px; margin-top:12px; }
-  .offer .ask a{ color:var(--eucalyptus); }
+  /* masthead */
+  .masthead{
+    display:flex; align-items:baseline; justify-content:space-between; gap:18px; flex-wrap:wrap;
+    padding-bottom:18px; border-bottom:1px solid var(--hair);
+  }
+  .masthead .name{ font-family:var(--deva); font-weight:700; color:var(--eucalyptus); font-size:clamp(30px,4.6vw,42px); line-height:1; letter-spacing:.01em; }
+  .masthead .meta{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); text-align:right; }
 
-  /* ── footer ── */
-  footer{ margin-top:40px; font-family:var(--mono); font-size:12px; letter-spacing:.06em;
-    color:var(--muted); display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; }
-  footer a{ text-decoration-color:var(--hair); }
+  /* plate body: specimen | catalogue */
+  .plate{ display:grid; grid-template-columns:minmax(220px,1fr) 1.45fr; gap:clamp(24px,4vw,52px); padding-top:28px; align-items:start; }
 
-  /* ── blurb overlay (seamless expand) ── */
+  /* specimen (left) */
+  .specimen{ position:relative; }
+  .specimen .mount{ border:1px solid var(--hair); background:var(--paper); padding:clamp(16px,2.4vw,30px); }
+  .specimen .leaf{ width:100%; height:auto; aspect-ratio:240/220; color:var(--eucalyptus); display:block; }
+  .label{ margin-top:18px; font-family:var(--mono); font-size:11.5px; line-height:1.85; color:var(--muted); letter-spacing:.02em; }
+  .label .sp{ color:var(--eucalyptus); font-style:normal; }
+  .label .dv{ font-family:var(--deva); font-weight:700; font-size:15px; color:var(--eucalyptus); letter-spacing:0; }
+  .label .row{ display:block; }
+  .label .k{ color:var(--sage); }
+
+  /* catalogue (right) */
+  .lead{ font-family:var(--serif); font-weight:400; color:var(--charcoal); font-size:clamp(20px,2.5vw,26px); line-height:1.32; letter-spacing:-.01em; text-wrap:balance; max-width:26ch; margin-bottom:30px; }
+  .cat-head{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); display:flex; align-items:center; gap:12px; margin:0 0 6px; }
+  .cat-head:not(:first-of-type){ margin-top:24px; }
+  .cat-head::after{ content:""; flex:1; height:1px; background:var(--hair); }
+
+  .entry{ display:flex; align-items:baseline; gap:12px; padding:9px 0; border-bottom:1px solid var(--hair); cursor:pointer; }
+  .entry:last-child{ border-bottom:0; }
+  .entry .num{ font-family:var(--mono); font-size:11px; color:var(--sage); width:2.2em; flex:none; letter-spacing:.04em; }
+  .entry .nm{ font-family:var(--serif); font-size:clamp(19px,2.2vw,22px); color:var(--eucalyptus); line-height:1.1; transition:color .2s var(--ease); }
+  .entry .dots{ flex:1; align-self:flex-end; border-bottom:1px dotted var(--hair-2); transform:translateY(-4px); min-width:14px; }
+  .entry .cap{ font-family:var(--body); font-size:13.5px; color:var(--muted); text-align:right; flex:none; max-width:46%; }
+  .entry:hover .nm{ color:var(--charcoal); }
+  .entry:hover .dots{ border-bottom-color:var(--sage); }
+  .entry[data-blurb="samooh"]:hover .nm{ color:var(--gold); }
+
+  /* colophon + footer */
+  .colophon{ margin-top:30px; padding-top:20px; border-top:1px solid var(--hair); display:flex; align-items:baseline; justify-content:space-between; gap:18px 24px; flex-wrap:wrap; }
+  .colophon .motto{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:15.5px; opacity:.9; max-width:42ch; }
+  .colophon .ends{ font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; }
+  .colophon .ends a{ color:var(--muted); border-bottom:1px solid var(--hair); transition:color .2s var(--ease), border-color .2s var(--ease); }
+  .colophon .ends a:hover{ color:var(--eucalyptus); border-bottom-color:var(--sage); }
+
+  /* ── blurb overlay ── */
   [data-blurb]{ cursor:pointer; }
-  main{ transition:opacity .3s var(--ease); }
-  body.blurb-open main{ opacity:0; pointer-events:none; }
-  .blurb{ position:fixed; inset:0; z-index:40; display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-    padding:9vh 24px 5vh; overflow-y:auto; opacity:0; pointer-events:none; transition:opacity .3s var(--ease); }
-  @media (min-width:1100px) and (min-height:840px){ .blurb{ justify-content:center; } }
+  .sheet{ transition:opacity .3s var(--ease); }
+  body.blurb-open .sheet{ opacity:0; pointer-events:none; }
+  .blurb{ position:fixed; inset:0; z-index:40; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:6vh 24px; overflow-y:auto; opacity:0; pointer-events:none; transition:opacity .3s var(--ease); }
   .blurb.open{ opacity:1; pointer-events:auto; }
   .blurb-inner{ width:100%; max-width:560px; }
-  .blurb-back{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--muted);
-    background:none; border:0; padding:0; cursor:pointer; margin-bottom:34px; transition:color .2s var(--ease); }
+  .blurb-back{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--muted); background:none; border:0; padding:0; cursor:pointer; margin-bottom:32px; transition:color .2s var(--ease); }
   .blurb-back:hover{ color:var(--eucalyptus); }
   .blurb-eyebrow{ font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--sage); margin-bottom:14px; }
   .blurb-title{ font-family:var(--serif); font-weight:400; color:var(--eucalyptus); font-size:32px; line-height:1.1; margin-bottom:22px; }
-  .blurb-figure{ display:block; margin:0 0 24px; width:100%; overflow:hidden; border-radius:12px;
-    border:1px solid var(--line); background:var(--paper-hi); }
+  .blurb-figure{ display:block; margin:0 0 24px; width:100%; overflow:hidden; border-radius:12px; border:1px solid var(--line); background:var(--paper-hi); }
   .blurb-figure img{ display:block; width:100%; height:auto; max-height:40vh; object-fit:contain; transition:transform .4s var(--ease); }
   .blurb-figure:hover img{ transform:scale(1.015); }
   .blurb-body{ color:var(--charcoal); font-size:16px; line-height:1.6; max-width:50ch; margin-bottom:26px; text-wrap:pretty; }
-  .blurb-visit{ font-family:var(--mono); font-size:13px; letter-spacing:.04em; color:var(--eucalyptus);
-    text-decoration:none; position:relative; }
-  .blurb-visit::after{ content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:currentColor;
-    transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease); }
+  .blurb-visit{ font-family:var(--mono); font-size:13px; letter-spacing:.04em; color:var(--eucalyptus); position:relative; }
+  .blurb-visit::after{ content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px; background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease); }
   .blurb-visit:hover::after{ transform:scaleX(1); }
 
-  @media (max-width:540px){
-    body{ padding:7vh 20px 5vh; justify-content:flex-start; }
-    .mark{ width:54px; height:50px; margin-bottom:18px; }
-    .wordmark{ margin-bottom:20px; }
-    h1{ margin-bottom:30px; }
-    .block{ margin-bottom:24px; }
-    .blurb{ padding:7vh 20px 5vh; }
-    .blurb-title{ font-size:27px; }
+  /* ── responsive ── */
+  @media (max-width:680px){
+    body{ padding:0; align-items:stretch; justify-content:flex-start; }
+    .sheet{ border:0; min-height:100dvh; padding:7vh 22px 5vh; }
+    .sheet::before,.sheet::after{ display:none; }
+    .plate{ grid-template-columns:1fr; gap:30px; }
+    .specimen{ max-width:300px; }
+    .entry .cap{ display:none; }   /* tag lives in the blurb on small screens */
+    .entry .dots{ display:none; }
+    .entry{ gap:14px; }
+    .colophon{ flex-direction:column; gap:14px; }
   }
 </style>
 </head>
 <body>
-  <main>
-    <div class="stage">
-      <div class="leaf mark" data-variant="full" data-sw="5" data-vsw="3"></div>
+  <main class="sheet">
+    <div class="masthead">
+      <div class="name" lang="kok">एकपानी</div>
+      <div class="meta">Ekpani · one leaf<br>a tiny studio · est. 2026</div>
+    </div>
 
-      <div class="wordmark">
-        <span class="deva" lang="kok">एकपानी</span>
-        <span class="latin">Ekpani · one leaf</span>
-      </div>
+    <div class="plate">
+      <aside class="specimen">
+        <div class="mount">
+          <div class="leaf" data-variant="full" data-sw="4.5" data-vsw="2.7"></div>
+        </div>
+        <div class="label">
+          <span class="row"><span class="sp">Centella asiatica</span> (L.) Urb.</span>
+          <span class="row"><span class="k">fam.</span> Apiaceae, the carrot family</span>
+          <span class="row"><span class="dv" lang="kok">एकपानी</span> &nbsp;"ekpani" · Konkani · one leaf</span>
+          <span class="row"><span class="k">also</span> brahmi · gotu kola · pennywort</span>
+          <span class="row"><span class="k">noted for</span> memory, calm, focus</span>
+        </div>
+      </aside>
 
-      <h1>A small studio for the things I wish existed. One plant, many leaves, each its own.</h1>
+      <section class="catalogue">
+        <p class="lead">A small studio for the things I wish existed. One plant, many leaves, each its own.</p>
 
-      <div class="block">
-        <p class="eyebrow">Tools</p>
-        <ul class="roster">
-          <li><a data-blurb="shio" href="https://shio.sh/?ref=ekpani.com" target="_blank" rel="noopener">Shio</a></li><li class="sep">·</li>
-          <li><a data-blurb="timebase" href="https://timebase.me/?ref=ekpani.com" target="_blank" rel="noopener">Timebase</a></li><li class="sep">·</li>
-          <li><a data-blurb="medivalent" href="https://medivalent.com/?ref=ekpani.com" target="_blank" rel="noopener">Medivalent</a></li>
-        </ul>
-      </div>
+        <p class="cat-head">Tools</p>
+        <div class="entry" data-blurb="shio" role="link" tabindex="0">
+          <span class="num">i</span><span class="nm">Shio</span><span class="dots"></span><span class="cap">a terminal for the agent era</span>
+        </div>
+        <div class="entry" data-blurb="timebase" role="link" tabindex="0">
+          <span class="num">ii</span><span class="nm">Timebase</span><span class="dots"></span><span class="cap">timezones made simple</span>
+        </div>
+        <div class="entry" data-blurb="medivalent" role="link" tabindex="0">
+          <span class="num">iii</span><span class="nm">Medivalent</span><span class="dots"></span><span class="cap">a pharmacy guide across borders</span>
+        </div>
 
-      <div class="block">
-        <p class="eyebrow">Spaces</p>
-        <ul class="roster">
-          <li><a data-blurb="samooh" href="https://samooh.com/?ref=ekpani.com" target="_blank" rel="noopener">Samooh</a></li><li class="sep">·</li>
-          <li><a data-blurb="dhuni" href="https://dhuni.net/?ref=ekpani.com" target="_blank" rel="noopener">Dhuni</a></li><li class="sep">·</li>
-          <li><a data-blurb="stem" href="https://stem.md/?ref=ekpani.com" target="_blank" rel="noopener">Stem</a></li>
-        </ul>
-      </div>
+        <p class="cat-head">Spaces</p>
+        <div class="entry" data-blurb="samooh" role="link" tabindex="0">
+          <span class="num">iv</span><span class="nm">Samooh</span><span class="dots"></span><span class="cap">the long game</span>
+        </div>
+        <div class="entry" data-blurb="dhuni" role="link" tabindex="0">
+          <span class="num">v</span><span class="nm">Dhuni</span><span class="dots"></span><span class="cap">a quiet listening world</span>
+        </div>
+        <div class="entry" data-blurb="stem" role="link" tabindex="0">
+          <span class="num">vi</span><span class="nm">Stem</span><span class="dots"></span><span class="cap">follow your curiosity</span>
+        </div>
+      </section>
+    </div>
 
-      <div class="offer">
-        <p class="bridge">Built quietly, for the joy of it. Now and then, a leaf grows past the rest.</p>
-        <p class="ask">Building something thoughtful? <a href="mailto:hi@ekpani.com">Say hi</a>.</p>
-      </div>
-
-      <footer>
+    <div class="colophon">
+      <p class="motto">Built quietly, for the joy of it. Now and then, a leaf grows past the rest.</p>
+      <div class="ends">
         <a href="mailto:hi@ekpani.com">hi@ekpani.com</a>
-        <span>a tiny studio by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a></span>
-      </footer>
+        <span>by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a></span>
+      </div>
     </div>
   </main>
 
@@ -218,6 +242,7 @@
       function back(){if(history.state&&history.state.blurb){history.back();}else{close();}}
       document.querySelectorAll("[data-blurb]").forEach(function(a){
         a.addEventListener("click",function(e){var k=a.getAttribute("data-blurb");if(!B[k])return;e.preventDefault();open(k,true);});
+        a.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){var k=a.getAttribute("data-blurb");if(!B[k])return;e.preventDefault();open(k,true);}});
       });
       el.addEventListener("click",function(e){
         if(e.target.closest(".blurb-visit"))return;
