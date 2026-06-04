@@ -25,7 +25,7 @@ The products are deliberately unalike: a terminal, a timezone planner, a cross-b
 - To last, and to leave more good behind than they take.
 
 ## Behind Ekpani
-Ekpani is the studio of [Amrith Shanbhag](https://amrith.co), who spent a decade in community and organic growth across consumer tech (including Product Hunt) and now builds his own products. Ekpani is an entity and a body of work, not a personal page. For the person, see amrith.co.
+Ekpani is the studio of [Amrith Shanbhag](https://amrith.co), who spent a decade in community and organic growth across consumer tech (including Product Hunt) and now builds his own products. It is also the entity behind his wider work, including select consulting and advisory; those inquiries go through amrith.co. Ekpani is an entity and a body of work, not a personal page. For the person, see amrith.co.
 
 ## Contact
 - Email: hi@ekpani.com
