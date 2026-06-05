@@ -130,6 +130,11 @@
 
   a{ color:inherit; text-decoration:none; }
 
+  /* ── pixel-art ekpani garden (decorative; see ekpani-garden.js) ── */
+  #garden, #garden-fg{ position:fixed; inset:0; pointer-events:none; }
+  #garden{ z-index:0; }      /* behind the sheet, under the grain */
+  #garden-fg{ z-index:5; }   /* corner climbers, in front of the sheet, under the modal/grain */
+
   /* ── the specimen sheet ── */
   .sheet{
     width:100%; max-width:880px; position:relative; z-index:1;
@@ -253,6 +258,8 @@
 </style>
 </head>
 <body>
+  <canvas id="garden" aria-hidden="true"></canvas>
+  <canvas id="garden-fg" aria-hidden="true"></canvas>
   <main class="sheet">
     <div class="masthead">
       <div class="name" lang="kok">एकपानी</div>
@@ -301,7 +308,7 @@
     <div class="colophon">
       <p class="motto">One plant, many leaves, each its own.</p>
       <div class="ends">
-        <a href="mailto:hi@ekpani.com">hi@ekpani.com</a> by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a></span>
+        <a href="mailto:hi@ekpani.com">hi@ekpani.com</a> by <a href="https://amrith.co/?ref=ekpani.com" target="_blank" rel="noopener">amrith</a>
       </div>
     </div>
   </main>
@@ -309,6 +316,7 @@
   <div class="scrim" id="scrim" aria-hidden="true" aria-live="polite"></div>
 
   <script src="ekpani-leaf.js"></script>
+  <script src="ekpani-garden.js"></script>
   <script>
     (function(){
       var B = {
