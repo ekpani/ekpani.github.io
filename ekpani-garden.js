@@ -12,6 +12,7 @@
 
   var CONFIG = {
     VINES:     true,
+    WRAP:      "full",     // "full" = continuous border | "corners" = grows from corners, open mid-edges
     BAND:      false,      // the old soft bottom band; off now (vines by themselves)
     INTENSITY: "whisper"   // "whisper" | "medium" | "lush"
   };
@@ -107,7 +108,7 @@
      leaves spill along ('x' for side vines, 'y' for top/bottom); outward = the
      side away from the sheet; noInwardTop suppresses inward leaves near the top
      (keeps the wordmark clear). */
-  function addEdge(R, sx, sy, dx, dy, len, axis, outward, noInwardY, birth){
+  function addEdge(R, sx, sy, dx, dy, len, axis, outward, noInwardY, birth, outwardOnly){
     var n = Math.max(2, Math.floor(len / s)), i, mead = 0, pts = [];
     for (i = 0; i < n; i++){
       if (R() < 0.22) mead += (R() < 0.5 ? -1 : 1);
@@ -119,7 +120,7 @@
     var lvs = [], side = outward;
     for (i = 1; i < n; i += 3){
       var s2 = side;
-      if (pts[i][1] < noInwardY) s2 = outward;   // force outward near the top
+      if (outwardOnly || pts[i][1] < noInwardY) s2 = outward;   // force outward
       lvs.push({ i:i, side:s2, axis:axis, leaf: Math.floor(R() * LEAVES.length), phase: R() * 6.2832 });
       side = -side;
     }
@@ -142,11 +143,20 @@
 
     var off = 5;                                  // stem sits just outside the border
     var L = safe.L - off, Rg = safe.R + off, T = safe.T - off, Bm = safe.B + off;
-    var eW = safe.R - safe.L, eH = safe.B - safe.T;
+    var eW = Rg - L, eH = Bm - T;
     var noInw = T + 0.20 * eH;                    // top danger zone for the wordmark
     function f(a, b){ return a + R() * (b - a); }
 
-    // sides: long strands down from the top corners, short strands up from the bottom
+    if (CONFIG.WRAP === "full"){
+      // a continuous border, corner to corner, leaves fringing outward only
+      addEdge(R, L,  T,  1,  0, eW, "y", -1, 0, 120, true);   // top:    TL -> TR
+      addEdge(R, Rg, T,  0,  1, eH, "x", +1, 0, 200, true);   // right:  TR -> BR
+      addEdge(R, Rg, Bm, -1, 0, eW, "y", +1, 0, 320, true);   // bottom: BR -> BL
+      addEdge(R, L,  Bm, 0, -1, eH, "x", -1, 0, 240, true);   // left:   BL -> TL
+      return;
+    }
+
+    // "corners": long strands down from the top corners, short strands up from the bottom
     addEdge(R, L,  T,  0,  1, f(0.55, 0.78) * eH, "x", -1, noInw, 120);
     addEdge(R, Rg, T,  0,  1, f(0.55, 0.78) * eH, "x", +1, noInw, 160);
     addEdge(R, L,  Bm, 0, -1, f(0.20, 0.34) * eH, "x", -1, noInw, 320);
