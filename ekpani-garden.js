@@ -1,18 +1,18 @@
-/* Ekpani garden: a quiet 8-bit foliage texture framing the specimen sheet.
-   Decorative only: one fixed, pointer-events:none canvas (#garden) sitting
-   behind the translucent sheet (z-0) and under the grain (z-50), so the same
-   paper grain unifies it. Two motifs, kept to a whisper:
-     - hanging vines trailing down from the top edge + the side gutters
-     - a soft dithered leaf band along the bottom
-   The texture (a deep->lit green ramp + ordered dithering on the rim) is lifted
-   from the reference art the user shared: foliage that reads as grown and fuzzy,
-   not cut. Palette is the brand greens; a gentle day/night tint keeps it alive. */
+/* Ekpani garden: quiet 8-bit ivy wrapped around the specimen sheet's border.
+   Decorative only: one fixed, pointer-events:none canvas (#garden) sitting in
+   FRONT of the translucent sheet (z-5) but under the modal scrim (z-40) and the
+   grain (z-50), so the ivy reads as growing ON the frame. Vines sprout from the
+   sheet's four corners and trail along its edges (long down the sides, short
+   along the top/bottom), with the middle of each edge left open so the wordmark
+   and content stay clear. Texture lifted from the reference art: a deep->lit
+   green ramp, small alternating leaves, kept to a whisper. A gentle day/night
+   tint keeps it alive. (CONFIG.BAND re-enables the old soft bottom band.) */
 (function () {
   "use strict";
 
   var CONFIG = {
     VINES:     true,
-    BAND:      true,
+    BAND:      false,      // the old soft bottom band; off now (vines by themselves)
     INTENSITY: "whisper"   // "whisper" | "medium" | "lush"
   };
 
@@ -26,8 +26,7 @@
   var staticMode = reduce;
   var ALPHA = CONFIG.INTENSITY === "lush" ? 0.92 : CONFIG.INTENSITY === "medium" ? 0.78 : 0.6;
 
-  var W = 0, H = 0, s = 3, GW = 0, GH = 0, isMobile = false;
-  var GUT = 20;
+  var W = 0, H = 0, s = 3, isMobile = false;
   var safe = { L: -1, R: -1, T: -1, B: -1 };
   var vines = [];
   var t0 = 0, raf = 0;
@@ -59,11 +58,11 @@
     }
   }
 
-  /* ---- ordered (Bayer) dithering for soft, grown-looking rims ---- */
+  /* ---- ordered (Bayer) dithering, used by the optional bottom band ---- */
   var B4 = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
   function dith(gx, gy, p){ return (B4[gy & 3][gx & 3] + 0.5) / 16 < p; }
 
-  /* ---- small vine-leaf sprites (chars index the ramp; '.' = transparent) ---- */
+  /* ---- small ivy-leaf sprites (chars index the ramp; '.' = transparent) ---- */
   var LEAVES = [
     [".34.", "3453", "2342", ".22."],
     [".43.", "3543", "2432", ".22."],
@@ -71,6 +70,21 @@
   ];
 
   function setPx(gx, gy, col){ ctx.fillStyle = col; ctx.fillRect(gx * s, gy * s, s, s); }
+  function setPxAbs(x, y, col){ setPx(Math.round(x / s), Math.round(y / s), col); }
+  function drawMap(map, gx, gy, flip){
+    var cols = map[0].length, r, k;
+    for (r = 0; r < map.length; r++){
+      var row = map[r];
+      for (k = 0; k < row.length; k++){
+        var ch = row.charAt(k);
+        if (ch === ".") continue;
+        var col = PAL[ch];
+        if (!col) continue;
+        var kk = flip ? (cols - 1 - k) : k;
+        setPx(gx + kk, gy + r, col);
+      }
+    }
+  }
 
   /* ---- seeded PRNG so layout is stable across frames/resizes ---- */
   function seeded(a){
@@ -82,73 +96,94 @@
     };
   }
 
-  /* ---- safe zone (carved from the sheet's box, with a gutter) ---- */
   function readSafe(){
     if (!main){ safe = { L:-1, R:-1, T:-1, B:-1 }; return; }
     var r = main.getBoundingClientRect();
     safe = { L:r.left, R:r.right, T:r.top, B:r.bottom };
   }
-  function blockedCell(gx, gy){
-    if (safe.L < 0) return false;
-    var x = gx * s, y = gy * s;
-    return !(x + s < safe.L - GUT || x > safe.R + GUT || y + s < safe.T - GUT || y > safe.B + GUT);
-  }
 
-  /* ---- build the hanging vines ---- */
-  function makeVine(R, x0, len, opts){
-    var path = [], gx = x0, drift = 0, d;
-    for (d = 0; d < len; d++){
-      if (R() < 0.30) drift = (R() < 0.5 ? -1 : 1);
-      if (d % 2 === 0) gx += (R() < 0.55 ? drift : 0);
-      if (opts.minX != null) gx = clamp(gx, opts.minX, opts.maxX);
-      path.push(gx);
+  /* ---- one vine running along an edge from a corner ----
+     (sx,sy) start; (dx,dy) unit step along the edge; axis = the cross axis the
+     leaves spill along ('x' for side vines, 'y' for top/bottom); outward = the
+     side away from the sheet; noInwardTop suppresses inward leaves near the top
+     (keeps the wordmark clear). */
+  function addEdge(R, sx, sy, dx, dy, len, axis, outward, noInwardY, birth){
+    var n = Math.max(2, Math.floor(len / s)), i, mead = 0, pts = [];
+    for (i = 0; i < n; i++){
+      if (R() < 0.22) mead += (R() < 0.5 ? -1 : 1);
+      mead = clamp(mead, -2, 2);
+      var x = sx + dx * i * s + (axis === "x" ? mead * s : 0);
+      var y = sy + dy * i * s + (axis === "y" ? mead * s : 0);
+      pts.push([x, y]);
     }
-    var leaves = [], side = R() < 0.5 ? 1 : -1, every = opts.every || 3;
-    for (d = 2; d < len; d += every){
-      leaves.push({ d:d, side:side, leaf: Math.floor(R() * LEAVES.length), flip: side < 0, phase: R() * 6.2832 });
+    var lvs = [], side = outward;
+    for (i = 1; i < n; i += 3){
+      var s2 = side;
+      if (pts[i][1] < noInwardY) s2 = outward;   // force outward near the top
+      lvs.push({ i:i, side:s2, axis:axis, leaf: Math.floor(R() * LEAVES.length), phase: R() * 6.2832 });
       side = -side;
     }
-    return { path:path, len:len, leaves:leaves, birth: opts.birth || 0 };
+    vines.push({ pts:pts, lvs:lvs, n:n, birth:birth });
   }
 
   function buildVines(){
     vines = [];
-    if (!CONFIG.VINES) return;
+    if (!CONFIG.VINES || safe.L < 0) return;
     var R = seeded(20260606);
-    var topRoom = Math.max(3, Math.floor((safe.T > 0 ? safe.T : 90) / s) - 2);
 
-    // top dangles: a couple of short vines above the sheet (off-centre)
-    var slots = isMobile ? [0.5] : [0.17, 0.83, 0.5];
-    var nTop = isMobile ? 1 : 2;
-    for (var i = 0; i < nTop; i++){
-      var fx = slots[i % slots.length];
-      var x0 = Math.round(GW * fx + (R() - 0.5) * GW * 0.05);
-      var len = Math.max(3, Math.round(topRoom * (0.55 + R() * 0.4)));
-      vines.push(makeVine(R, x0, len, { every:3, birth:120 + i * 150, minX:1, maxX:GW - 2 }));
+    if (isMobile){
+      // no real gutter on phones: two short ivy strands down the screen corners,
+      // leaves spilling inward over the wide padding.
+      var ml = Math.round(H * 0.20);
+      addEdge(R, 5,     0, 0, 1, ml, "x", +1, -1e9, 140);
+      addEdge(R, W - 5, 0, 0, 1, ml, "x", -1, -1e9, 220);
+      return;
     }
 
-    if (isMobile) return;
+    var off = 5;                                  // stem sits just outside the border
+    var L = safe.L - off, Rg = safe.R + off, T = safe.T - off, Bm = safe.B + off;
+    var eW = safe.R - safe.L, eH = safe.B - safe.T;
+    var noInw = T + 0.20 * eH;                    // top danger zone for the wordmark
+    function f(a, b){ return a + R() * (b - a); }
 
-    // side vines: trail down the gutters beside the sheet (only if there's room)
-    var GMIN = 80;
-    var bottom = Math.round(Math.min(safe.B, H - s * 3) / s);
-    if (safe.L > GMIN){
-      vines.push(makeVine(R, Math.round((safe.L * 0.5) / s),
-        Math.round(bottom * (0.7 + R() * 0.2)),
-        { every:3, birth:240, minX:1, maxX:Math.floor((safe.L - GUT) / s) - 1 }));
-    }
-    if (W - safe.R > GMIN){
-      vines.push(makeVine(R, Math.round((safe.R + (W - safe.R) * 0.5) / s),
-        Math.round(bottom * (0.7 + R() * 0.2)),
-        { every:3, birth:320, minX:Math.ceil((safe.R + GUT) / s) + 1, maxX:GW - 2 }));
-    }
+    // sides: long strands down from the top corners, short strands up from the bottom
+    addEdge(R, L,  T,  0,  1, f(0.55, 0.78) * eH, "x", -1, noInw, 120);
+    addEdge(R, Rg, T,  0,  1, f(0.55, 0.78) * eH, "x", +1, noInw, 160);
+    addEdge(R, L,  Bm, 0, -1, f(0.20, 0.34) * eH, "x", -1, noInw, 320);
+    addEdge(R, Rg, Bm, 0, -1, f(0.20, 0.34) * eH, "x", +1, noInw, 300);
+
+    // top + bottom: short runs from each corner, leaves outward (middle stays open)
+    addEdge(R, L,  T,  1,  0, f(0.20, 0.36) * eW, "y", -1, 1e9, 180);
+    addEdge(R, Rg, T, -1,  0, f(0.20, 0.36) * eW, "y", -1, 1e9, 220);
+    addEdge(R, L,  Bm, 1,  0, f(0.18, 0.32) * eW, "y", +1, -1e9, 360);
+    addEdge(R, Rg, Bm, -1, 0, f(0.18, 0.32) * eW, "y", +1, -1e9, 380);
   }
 
-  /* ---- bottom band: a low, scalloped, dithered leaf strip ---- */
+  /* ---- optional bottom band (CONFIG.BAND) ---- */
   function bandProfile(gx){
     var x = gx * s, maxH = isMobile ? 7 : 11;
     var n = Math.sin(x * 0.012) * 0.45 + Math.sin(x * 0.034 + 1.3) * 0.30 + Math.sin(x * 0.085 + 0.7) * 0.25;
     return Math.max(3, Math.round(maxH * (0.25 + 0.6 * ((n + 1) / 2))));
+  }
+  function drawBand(now){
+    var GW = Math.ceil(W / s) + 1, GH = Math.ceil(H / s) + 1;
+    var g0 = grow(now, 200, 1300), ground = GH, gx, d;
+    for (gx = 0; gx < GW; gx++){
+      var hgt = bandProfile(gx);
+      var local = clamp(g0 * 1.4 - (Math.min(gx, GW - gx) / GW) * 0.5, 0, 1);
+      local = local * local * (3 - 2 * local);
+      var hh = Math.round(hgt * local);
+      for (d = 0; d < hh; d++){
+        var gy = ground - 1 - d, top = hgt - 1 - d, ch, p = 1;
+        if (top <= 0){ ch = "4"; p = 0.45; }
+        else if (top <= 1){ ch = "4"; p = 0.8; }
+        else if (top <= 3){ ch = "3"; }
+        else if (top <= 6){ ch = "2"; }
+        else { ch = "1"; }
+        if (p < 1 && !dith(gx, gy, p)) continue;
+        setPx(gx, gy, PAL[ch]);
+      }
+    }
   }
 
   /* ---- growth easing (in step with the sheet's ~1.3s fade-in) ---- */
@@ -158,66 +193,34 @@
     return p < 0 ? 0 : p > 1 ? 1 : p;
   }
 
-  function drawBand(now){
-    if (!CONFIG.BAND) return;
-    var g0 = grow(now, 200, 1300), ground = GH, gx, d;
-    for (gx = 0; gx < GW; gx++){
-      var hgt = bandProfile(gx);
-      var edge = Math.min(gx, GW - gx) / GW;            // corners grow first
-      var local = clamp(g0 * 1.4 - edge * 0.5, 0, 1);
-      local = local * local * (3 - 2 * local);
-      var breath = staticMode ? 0 : Math.sin(now * 0.0005 + gx * 0.05) * 0.04;
-      var hh = Math.round(hgt * local * (1 + breath));
-      for (d = 0; d < hh; d++){
-        var gy = ground - 1 - d;
-        if (blockedCell(gx, gy)) continue;
-        var top = hgt - 1 - d, ch, p = 1;
-        if (top <= 0){ ch = "4"; p = 0.45; }
-        else if (top <= 1){ ch = "4"; p = 0.8; }
-        else if (top <= 3){ ch = "3"; }
-        else if (top <= 6){ ch = "2"; }
-        else { ch = "1"; }
-        if (p < 1 && !dith(gx, gy, p)) continue;
-        var col = PAL[ch];
-        if (ch === "3" && dith(gx + 5, gy + 3, 0.12)) col = PAL["4"]; // sparse lit flecks
-        setPx(gx, gy, col);
-      }
-    }
-  }
-
   function drawVine(v, now){
     var frac = grow(now, v.birth, 1100);
-    var lenNow = staticMode ? v.len : Math.round(v.len * frac), d, i;
-    for (d = 0; d < lenNow; d++){
-      var gx = v.path[d];
-      if (!blockedCell(gx, d)) setPx(gx, d, PAL["2"]); // stem
-    }
-    for (i = 0; i < v.leaves.length; i++){
-      var lf = v.leaves[i];
-      if (lf.d >= lenNow) continue;
-      var map = LEAVES[lf.leaf];
+    var upto = staticMode ? v.n : Math.round(v.n * frac), i, j;
+    for (i = 0; i < upto; i++){ var p = v.pts[i]; setPxAbs(p[0], p[1], PAL["2"]); }
+    for (j = 0; j < v.lvs.length; j++){
+      var lf = v.lvs[j];
+      if (lf.i >= upto) continue;
+      var q = v.pts[lf.i];
+      var cgx = Math.round(q[0] / s), cgy = Math.round(q[1] / s);
+      var map = LEAVES[lf.leaf], w = map[0].length, h = map.length;
       var sway = staticMode ? 0 : Math.round(Math.sin(now * 0.0008 + lf.phase));
-      var bx = v.path[lf.d] + (lf.side < 0 ? -(map[0].length) + 1 : 0) + sway;
-      var by = lf.d - 1;
-      var cols = map[0].length, r, k;
-      for (r = 0; r < map.length; r++){
-        var row = map[r];
-        for (k = 0; k < row.length; k++){
-          var c2 = row.charAt(k);
-          if (c2 === ".") continue;
-          var kk = lf.flip ? (cols - 1 - k) : k;
-          var X = bx + kk, Y = by + r;
-          if (blockedCell(X, Y)) continue;
-          setPx(X, Y, PAL[c2]);
-        }
+      var gx, gy, flip = false;
+      if (lf.axis === "x"){
+        gx = (lf.side > 0 ? cgx + 1 : cgx - w) + sway * lf.side;
+        gy = cgy - 2;
+        flip = lf.side < 0;
+      } else {
+        gy = lf.side > 0 ? cgy + 1 : cgy - h;
+        gx = cgx - 2 + sway;
       }
+      drawMap(map, gx, gy, flip);
     }
   }
 
   function drawAll(now){
     ctx.clearRect(0, 0, W, H);
     ctx.globalAlpha = ALPHA;
-    drawBand(now);
+    if (CONFIG.BAND) drawBand(now);
     for (var i = 0; i < vines.length; i++) drawVine(vines[i], now);
     ctx.globalAlpha = 1;
   }
@@ -232,7 +235,6 @@
     W = window.innerWidth; H = window.innerHeight;
     isMobile = W <= 720;
     s = isMobile ? 2 : 3;
-    GW = Math.ceil(W / s) + 1; GH = Math.ceil(H / s) + 1;
     cv.width = Math.floor(W * dpr); cv.height = Math.floor(H * dpr);
     cv.style.width = W + "px"; cv.style.height = H + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -256,13 +258,13 @@
   var rt;
   window.addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(start, 150); });
   window.addEventListener("scroll", function(){
-    readSafe();
-    if (staticMode){ clearTimeout(rt); rt = setTimeout(function(){ drawAll(performance.now()); }, 60); }
+    clearTimeout(rt);
+    rt = setTimeout(function(){ readSafe(); buildVines(); if (staticMode) drawAll(performance.now()); }, 120);
   }, { passive: true });
   if (window.ResizeObserver && main){
     new ResizeObserver(function(){ clearTimeout(rt); rt = setTimeout(start, 150); }).observe(main);
   }
-  if (main) main.addEventListener("animationend", function(){ readSafe(); }, { once: true });
+  if (main) main.addEventListener("animationend", function(){ readSafe(); buildVines(); }, { once: true });
   document.addEventListener("visibilitychange", function(){ document.hidden ? pause() : resume(); });
   if (document.body){
     new MutationObserver(function(){
