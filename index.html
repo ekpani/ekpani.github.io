@@ -181,6 +181,10 @@
   .entry:hover .dots, .entry:focus-visible .dots{ border-bottom-color:var(--sage); }
   .entry[data-blurb="samooh"]:hover .nm, .entry[data-blurb="samooh"]:focus-visible .nm{ color:var(--gold); }
 
+  /* in cultivation: quiet line for leaves still growing (not yet public) */
+  .cultivation{ margin-top:22px; padding-top:14px; border-top:1px solid var(--hair); font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--muted); }
+  .cultivation .k{ text-transform:uppercase; letter-spacing:.2em; color:var(--sage); margin-right:12px; }
+
   /* colophon + footer */
   .colophon{ margin-top:30px; padding-top:20px; border-top:1px solid var(--hair); display:flex; align-items:baseline; justify-content:space-between; gap:18px 24px; flex-wrap:wrap; }
   .colophon .motto{ font-family:var(--serif); font-style:italic; color:var(--charcoal); font-size:15.5px; opacity:.9; max-width:42ch; }
@@ -282,20 +286,16 @@
         <div class="entry" data-blurb="timebase" role="link" tabindex="0">
           <span class="num">ii</span><span class="nm">Timebase</span><span class="dots"></span><span class="cap">timezones made simple</span>
         </div>
-        <div class="entry" data-blurb="medivalent" role="link" tabindex="0">
-          <span class="num">iii</span><span class="nm">Medivalent</span><span class="dots"></span><span class="cap">a pharmacy guide across borders</span>
-        </div>
 
         <p class="cat-head">Spaces</p>
         <div class="entry" data-blurb="samooh" role="link" tabindex="0">
-          <span class="num">iv</span><span class="nm">Samooh</span><span class="dots"></span><span class="cap">Indian founders, global products</span>
+          <span class="num">iii</span><span class="nm">Samooh</span><span class="dots"></span><span class="cap">Indian founders, global products</span>
         </div>
         <div class="entry" data-blurb="dhuni" role="link" tabindex="0">
-          <span class="num">v</span><span class="nm">Dhuni</span><span class="dots"></span><span class="cap">a quiet listening world</span>
+          <span class="num">iv</span><span class="nm">Dhuni</span><span class="dots"></span><span class="cap">a quiet listening world</span>
         </div>
-        <div class="entry" data-blurb="stem" role="link" tabindex="0">
-          <span class="num">vi</span><span class="nm">Stem</span><span class="dots"></span><span class="cap">follow your curiosity</span>
-        </div>
+
+        <p class="cultivation"><span class="k">In cultivation</span>Stem · Medivalent</p>
       </section>
     </div>
 
