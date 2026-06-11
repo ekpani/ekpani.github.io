@@ -1,8 +1,8 @@
-# Ekpani
+# Ekpani Labs
 
-> Ekpani (एकपानी) builds tools and spaces that should exist. One plant, many leaves, each its own.
+> Ekpani Labs (एकपानी) builds tools and spaces that should exist. One plant, many leaves, each its own.
 
-Ekpani is Konkani for "one leaf," the name of the Centella asiatica plant (also known as brahmi or gotu kola), long noted for memory, calm, and focus. It is a small, independent studio: the quiet root that a handful of separate software products and spaces trace back to. Each keeps its own name and identity. Ekpani is the still point beneath them, never competing with them for attention.
+Ekpani is Konkani for "one leaf," the name of the Centella asiatica plant (also known as brahmi or gotu kola), long noted for memory, calm, and focus. Ekpani Labs is a small, independent lab: the quiet root that a handful of separate software products and spaces trace back to. Each keeps its own name and identity. Ekpani is the still point beneath them, never competing with them for attention.
 
 The work is the things their maker wished existed, then built. Everything here is made deliberately, with real care for the details, and only shipped when it earns it. Nothing chases hype or scale for its own sake. Things are made slowly and quietly, for the joy of building, one leaf at a time. Some leaves stay small and useful. Now and then one may grow past the rest. Either way the aim is plain: leave a little more good in the world, well made.
 
@@ -24,8 +24,8 @@ The products are deliberately unalike: a terminal, a timezone planner, a cross-b
 - For the joy of it. These are built for love of the craft, not to a roadmap or a trend.
 - To last, and to leave more good behind than they take.
 
-## Behind Ekpani
-Ekpani is the studio of [Amrith Shanbhag](https://amrith.co), who spent a decade in community and organic growth across consumer tech (including Product Hunt) and now builds his own products. It is also the entity behind his wider work, including select consulting and advisory; those inquiries go through amrith.co. Ekpani is an entity and a body of work, not a personal page. For the person, see amrith.co.
+## Behind Ekpani Labs
+Ekpani Labs is the lab of [Amrith Shanbhag](https://amrith.co), who spent a decade in community and organic growth across consumer tech (including Product Hunt) and now builds his own products. It is also the entity behind his wider work, including select consulting and advisory; those inquiries go through amrith.co. Ekpani is an entity and a body of work, not a personal page. For the person, see amrith.co.
 
 ## Contact
 - Email: hi@ekpani.com
